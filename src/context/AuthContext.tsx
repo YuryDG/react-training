@@ -51,6 +51,16 @@ export const useAuth = () => {
 // context provider
 export const AuthProvider: React.FC = ({ children }) => {
 
+    // control first loading
+    /**
+     * By default when app reload, we need to wait for firebase to get the user data
+     * when user is already logged in. 
+     * if firebase is loading the user we can said that our app is loading, 
+     * in this case, we won't render the children until firebase retrieve the info of the 
+     * current user
+     */
+    const [isFetchingUser, setIsFetchingUser] = useState(true);
+
     // state variable to store the current user
     const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -75,6 +85,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
         const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
             setCurrentUser(user);
+            setIsFetchingUser(false);
             // if (user) {
             // User is signed in, see docs for a list of available properties
             // https://firebase.google.com/docs/reference/js/firebase.User
@@ -95,7 +106,7 @@ export const AuthProvider: React.FC = ({ children }) => {
             setIsLoading(true);
             setMessage({ title: '', info: '', type: 'error' });
             await createUserWithEmailAndPassword(getAuth(), email, password);
-            setMessage({ title: '', info: '', type: 'error' });
+            setMessage({ title: 'Sign up', info: 'Welcome to the system', type: 'info' });
             setIsLoading(false);
         } catch (error) {
             setMessage({
@@ -115,7 +126,7 @@ export const AuthProvider: React.FC = ({ children }) => {
             setMessage({
                 title: 'Login',
                 info: 'Welcome back ' + email,
-                type: 'error'
+                type: 'info'
             });
             setIsLoading(false);
         } catch (error) {
@@ -178,7 +189,17 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     return (
         <AuthContext.Provider value={value}>
-            {children}
+            {!isFetchingUser && children}
         </AuthContext.Provider>
+        /**
+        * Pay attention to the line  {!isFetchingUser && children}
+        * We will render the app only when firebase fetch the info for the current user
+        * 
+        * By default when app reload, we need to wait for firebase to get the user data
+        * when user is already logged in. 
+        * if firebase is loading the user we can said that our app is loading, 
+        * in this case, we won't render the children until firebase retrieve the info of the 
+        * current user
+       */
     )
 }
