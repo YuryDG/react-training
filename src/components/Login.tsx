@@ -1,21 +1,27 @@
 import { FormEvent, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
+import { NavigationState } from "../types";
 
 type LoginProps = {};
 
-export const Login: React.FC<LoginProps> = (props) => {
+export const Login: React.FC<LoginProps> = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const { login, error, isLoading } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (emailRef.current && passwordRef.current) {
             await login(emailRef.current.value, passwordRef.current.value);
-            navigate('/'); // go to dashboard
+
+            // NavigationState is a custom type created by me
+            const to = location.state? (location.state as NavigationState).from : '/';            
+            
+            navigate(to); // go to the same place where it was redirected to login page
         }
     }
 

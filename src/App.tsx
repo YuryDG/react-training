@@ -4,13 +4,14 @@ import {
   Link
 } from "react-router-dom";
 import { Dashboard, Login, SignUp } from "./components";
+import { RequireAuth } from "./components/RequireAuth";
 
 export default function App() {
   return (
     <div className="w-2/6 mx-auto">
       <nav>
         <ul className="flex justify-between bg-gray-800 text-white px-5 py-3 rounded-sm">
-        <li className="">
+          <li className="">
             <Link to="/login">Login</Link>
           </li>
           <li className="">
@@ -22,9 +23,15 @@ export default function App() {
 
       <div className="p-5 border">
         <Routes>
+          <Route path="/"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={<Dashboard />} />
         </Routes>
       </div>
     </div>
