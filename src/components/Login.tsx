@@ -1,4 +1,5 @@
 import { FormEvent, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
 
 type LoginProps = {};
@@ -6,10 +7,16 @@ type LoginProps = {};
 export const Login: React.FC<LoginProps> = (props) => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const { error, isLoading } = useAuth();
+    const { login, error, isLoading } = useAuth();
+    const navigate = useNavigate();
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (emailRef.current && passwordRef.current) {
+            await login(emailRef.current.value, passwordRef.current.value);
+            navigate('/dashboard');
+        }
     }
 
     return (
@@ -38,6 +45,9 @@ export const Login: React.FC<LoginProps> = (props) => {
                         className="cursor-pointer mt-2 bg-blue-500 px-4 py-2 rounded text-white">
                         Login
                     </button>
+                </div>
+                <div className="text-right mt-5">
+                    Need an account? <Link to="signup">Sign up</Link>
                 </div>
             </form>
         </div>

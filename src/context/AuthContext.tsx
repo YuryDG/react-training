@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
     getAuth,
     createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
     User,
     onAuthStateChanged,
 } from "firebase/auth";
@@ -13,14 +14,16 @@ import {
 type AuthContextProps = {
     currentUser: User | null;
     signUp: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     error: string;
-    isLoading: boolean
+    isLoading: boolean;
 }
 
 // default value for the context
 const authContextDefaultValue: AuthContextProps = {
     currentUser: null,
-    signUp: async (email: string, password: string) => undefined,
+    signUp: async (_: string, __: string) => undefined,
+    login: async (_: string, __: string) => undefined,
     error: 'AuthProvider was not found on the app subtree',
     isLoading: false
 }
@@ -84,10 +87,25 @@ export const AuthProvider: React.FC = ({ children }) => {
         }
     }
 
+    const login = async (email: string, password: string) => {
+        try {
+            setError('');
+            setIsLoading(true);
+
+            const response = await signInWithEmailAndPassword(getAuth(), email, password);
+            setIsLoading(false);
+            console.log({ response });
+        } catch (error) {
+            setError((error as Error).message || 'Something when wrong when sign in');
+            setIsLoading(false);
+        }
+    }
+
     // value for the context
     const value = {
         currentUser,
         signUp,
+        login,
         error,
         isLoading
     }
