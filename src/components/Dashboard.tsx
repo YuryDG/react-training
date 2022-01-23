@@ -1,10 +1,28 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context";
+
 type DashboardProps = {};
 
 export const Dashboard: React.FC<DashboardProps> = (props) => {
-    console.log({ props });
+    const { currentUser, logout } = useAuth();
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        logout();
+        navigate('/'); // login page
+    }
+
     return (
-        <div>
-            <h2>Dashboard works!</h2>
+        <div className="text-center">
+            <h2>Welcome to the Dashboard </h2>
+            <p>Email: {currentUser?.email}</p>
+            
+            <button 
+
+            className="mt-5 bg-blue-500 px-4 py-2 cursor-pointer rounded text-white"
+                onClick={handleLogout}>
+                Logout
+            </button>
         </div>
     )
 }
