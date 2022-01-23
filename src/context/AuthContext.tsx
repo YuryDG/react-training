@@ -12,6 +12,8 @@ import {
     onAuthStateChanged,
 } from "firebase/auth";
 
+import { Message } from '../types';
+
 // type for the value of the context
 type AuthContextProps = {
     currentUser: User | null;
@@ -19,7 +21,7 @@ type AuthContextProps = {
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
-    error: string;
+    message: Message,
     isLoading: boolean;
 }
 
@@ -30,7 +32,11 @@ const authContextDefaultValue: AuthContextProps = {
     login: async (_: string, __: string) => { },
     logout: async () => { },
     resetPassword: async (_: string) => { },
-    error: 'AuthProvider was not found on the app subtree',
+    message: {
+        title: 'AuthProvider Settings',
+        info: 'AuthProvider was not found on the app subtree',
+        type: 'error'
+    },
     isLoading: false
 }
 
@@ -51,8 +57,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     // state variable to store the current user
     const [isLoading, setIsLoading] = useState(false);
 
-    // app Error
-    const [error, setError] = useState('');
+    // app message
+    const [message, setMessage] = useState<Message>({
+        title: '',
+        info: '',
+        type: 'info'
+    });
 
     /**
      * Pay attention to this part
@@ -82,51 +92,75 @@ export const AuthProvider: React.FC = ({ children }) => {
     // function to sing up
     const signUp = async (email: string, password: string) => {
         try {
-            setError('');
             setIsLoading(true);
-
+            setMessage({ title: '', info: '', type: 'error' });
             await createUserWithEmailAndPassword(getAuth(), email, password);
+            setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(false);
         } catch (error) {
-            setError((error as Error).message || 'Something when wrong when sign up');
+            setMessage({
+                title: 'Sign up',
+                info: (error as Error).message || 'Something when wrong when sign up',
+                type: 'error'
+            });
             setIsLoading(false);
         }
     }
 
     const login = async (email: string, password: string) => {
         try {
-            setError('');
+            setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(true);
-
-            const response = await signInWithEmailAndPassword(getAuth(), email, password);
+            await signInWithEmailAndPassword(getAuth(), email, password);
+            setMessage({
+                title: 'Login',
+                info: 'Welcome back ' + email,
+                type: 'error'
+            });
             setIsLoading(false);
-            console.log({ response });
         } catch (error) {
-            setError((error as Error).message || 'Something when wrong when sign in');
+            setMessage({
+                title: 'Login',
+                info: (error as Error).message || 'Something when wrong when sign in',
+                type: 'error'
+            });
             setIsLoading(false);
         }
     }
 
     const logout = async () => {
         try {
-            setError('');
+            setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(true);
             await signOut(getAuth());
             setIsLoading(false);
         } catch (error) {
-            setError((error as Error).message || 'Something when wrong when logout');
+            setMessage({
+                title: 'Logout',
+                info: (error as Error).message || 'Something when wrong when logout',
+                type: 'error'
+            });
             setIsLoading(false);
         }
     }
 
     const resetPassword = async (email: string) => {
         try {
-            setError('');
+            setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(true);
             await sendPasswordResetEmail(getAuth(), email);
+            setMessage({
+                title: 'Reset Password',
+                info: 'Check your email for further instructions',
+                type: 'info'
+            });
             setIsLoading(false);
         } catch (error) {
-            setError((error as Error).message || 'Something when wrong when reset password');
+            setMessage({
+                title: 'Reset Password',
+                info: (error as Error).message || 'Something when wrong when reset password',
+                type: 'error'
+            });
             setIsLoading(false);
         }
     }
@@ -138,8 +172,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         login,
         logout,
         resetPassword,
-        error,
         isLoading,
+        message
     }
 
     return (

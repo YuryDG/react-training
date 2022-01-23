@@ -8,3 +8,9 @@ export type Todo = {
 export type NavigationState = {
     from: string;
 }
+
+export type Message = {
+    title: string;
+    info: string;
+    type: "error" | 'info'
+};
