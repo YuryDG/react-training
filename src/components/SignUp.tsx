@@ -1,4 +1,5 @@
 import { FormEvent, useRef } from "react";
+import { Link, useNavigate} from "react-router-dom";
 import { useAuth } from "../context";
 
 type SignUpProps = {};
@@ -7,6 +8,8 @@ export const SignUp: React.FC<SignUpProps> = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
+    
+    const navigate = useNavigate();
     const { signUp, error, isLoading } = useAuth();
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -15,13 +18,14 @@ export const SignUp: React.FC<SignUpProps> = () => {
         // TODO: validate  passwords match
 
         if (emailRef.current && passwordRef.current) {
-            signUp(emailRef.current.value, passwordRef.current.value);
+            await signUp(emailRef.current.value, passwordRef.current.value);
+            navigate('/dashboard');
         }
     }
 
     return (
         <div>
-            <h2 className="text-center mb-1">SignUp</h2>
+            <h2 className="text-center mb-1 text-4xl">SignUp</h2>
             <hr className="mb-5" />
             {
                 error && <div className="mb-5 text-red px-5 py-3 bg-red-200">
@@ -49,6 +53,9 @@ export const SignUp: React.FC<SignUpProps> = () => {
                         className="cursor-pointer mt-2 bg-blue-500 px-4 py-2 rounded text-white">
                         Sign Up
                     </button>
+                </div>
+                <div className="text-right mt-5">
+                    Have already an account? <Link to="/">Login</Link>
                 </div>
             </form>
         </div>
