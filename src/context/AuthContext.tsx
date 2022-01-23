@@ -7,6 +7,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
+    updateEmail,
+    updatePassword,
     sendPasswordResetEmail,
     User,
     onAuthStateChanged,
@@ -21,6 +23,7 @@ type AuthContextProps = {
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
+    updateProfile: (email?: string, newPassword?: string) => Promise<void>
     message: Message,
     isLoading: boolean;
 }
@@ -32,6 +35,7 @@ const authContextDefaultValue: AuthContextProps = {
     login: async (_: string, __: string) => { },
     logout: async () => { },
     resetPassword: async (_: string) => { },
+    updateProfile: async (_?: string, __?: string) => { },
     message: {
         title: 'AuthProvider Settings',
         info: 'AuthProvider was not found on the app subtree',
@@ -176,6 +180,41 @@ export const AuthProvider: React.FC = ({ children }) => {
         }
     }
 
+    const updateProfile = async (email = '', newPassword = '') => {
+        if (!currentUser || (email === '' && newPassword === '')) {
+            return
+        } else {
+            try {
+                setMessage({ title: '', info: '', type: 'error' });
+                setIsLoading(true);
+                const actions = [];
+                if (email !== '' && email !== currentUser.email) {
+                    actions.push(updateEmail(currentUser, email));
+                }
+
+                if (newPassword !== '') {
+                    actions.push(updatePassword(currentUser, newPassword));
+                }
+
+                await Promise.all(actions);
+
+                setMessage({
+                    title: 'Update Profile',
+                    info: 'Profile updated successfully',
+                    type: 'info'
+                });
+                setIsLoading(false);
+            } catch (error) {
+                setMessage({
+                    title: 'Update',
+                    info: (error as Error).message || 'Something when wrong when update the profile',
+                    type: 'error'
+                });
+                setIsLoading(false);
+            }
+        }
+    }
+
     // value for the context
     const value = {
         currentUser,
@@ -183,6 +222,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         login,
         logout,
         resetPassword,
+        updateProfile,
         isLoading,
         message
     }

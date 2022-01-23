@@ -3,7 +3,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { Dashboard, ForgotPassword, Login, SignUp } from "./components";
+import { Dashboard, ForgotPassword, Login, SignUp, UpdateProfile } from "./components";
 import { RequireAuth } from "./components/RequireAuth";
 import { useAuth } from "./context";
 
@@ -62,6 +62,12 @@ export default function App() {
                 <Dashboard />
               </RequireAuth>
             }
+          />
+          <Route path="/update-profile"
+            element={
+              <RequireAuth>
+                <UpdateProfile />
+              </RequireAuth>}
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
