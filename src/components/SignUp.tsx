@@ -10,7 +10,7 @@ export const SignUp: React.FC<SignUpProps> = () => {
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
     
     const navigate = useNavigate();
-    const { signUp, error, isLoading } = useAuth();
+    const { signUp, isLoading } = useAuth();
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -27,11 +27,6 @@ export const SignUp: React.FC<SignUpProps> = () => {
         <div>
             <h2 className="text-center mb-1 text-4xl">SignUp</h2>
             <hr className="mb-5" />
-            {
-                error && <div className="mb-5 text-red px-5 py-3 bg-red-200">
-                    {error}
-                </div>
-            }
             <form name="signUpForm" onSubmit={onSubmit}>
                 <div className="flex items-center justify-center mb-3">
                     <label className="w-[150px]" htmlFor="email">Email:</label>

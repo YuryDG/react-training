@@ -14,10 +14,8 @@ export const Dashboard: React.FC<DashboardProps> = () => {
 
     return (
         <div className="text-center">
-            <h2>Welcome to the Dashboard </h2>
-
-            <div>
-                <p>Email: {currentUser?.email}</p>
+            <div className="m-4">
+                <p className="mb-5">Email: {currentUser?.email}</p>
                 <Link to='/update-profile'
                     className="mt-5 bg-blue-500 px-4 py-2 rounded text-white">
                     Update Profile
