@@ -6,14 +6,13 @@ type ForgotPasswordProps = {};
 
 export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
     const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
     const { resetPassword, isLoading } = useAuth();
     const navigate = useNavigate();
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (emailRef.current && passwordRef.current) {
+        if (emailRef.current) {
             await resetPassword(emailRef.current.value);
             navigate('/');
         }
