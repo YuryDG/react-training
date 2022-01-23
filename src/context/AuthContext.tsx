@@ -7,6 +7,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
+    sendPasswordResetEmail,
     User,
     onAuthStateChanged,
 } from "firebase/auth";
@@ -17,6 +18,7 @@ type AuthContextProps = {
     signUp: (email: string, password: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    resetPassword: (email: string) => Promise<void>;
     error: string;
     isLoading: boolean;
 }
@@ -24,9 +26,10 @@ type AuthContextProps = {
 // default value for the context
 const authContextDefaultValue: AuthContextProps = {
     currentUser: null,
-    signUp: async(_: string, __: string) => {},
-    login: async (_: string, __: string) => {},
-    logout: async () => {},
+    signUp: async (_: string, __: string) => { },
+    login: async (_: string, __: string) => { },
+    logout: async () => { },
+    resetPassword: async (_: string) => { },
     error: 'AuthProvider was not found on the app subtree',
     isLoading: false
 }
@@ -116,14 +119,27 @@ export const AuthProvider: React.FC = ({ children }) => {
         }
     }
 
+    const resetPassword = async (email: string) => {
+        try {
+            setError('');
+            setIsLoading(true);
+            await sendPasswordResetEmail(getAuth(), email);
+            setIsLoading(false);
+        } catch (error) {
+            setError((error as Error).message || 'Something when wrong when reset password');
+            setIsLoading(false);
+        }
+    }
+
     // value for the context
     const value = {
         currentUser,
         signUp,
         login,
         logout,
+        resetPassword,
         error,
-        isLoading
+        isLoading,
     }
 
     return (
