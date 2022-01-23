@@ -1,25 +1,31 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
 
 type DashboardProps = {};
 
-export const Dashboard: React.FC<DashboardProps> = (props) => {
+export const Dashboard: React.FC<DashboardProps> = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate()
 
     const handleLogout = () => {
         logout();
-        navigate('/'); // login page
+        navigate('/login'); // login page
     }
 
     return (
         <div className="text-center">
             <h2>Welcome to the Dashboard </h2>
-            <p>Email: {currentUser?.email}</p>
-            
-            <button 
 
-            className="mt-5 bg-blue-500 px-4 py-2 cursor-pointer rounded text-white"
+            <div>
+                <p>Email: {currentUser?.email}</p>
+                <Link to='/update-profile'
+                    className="mt-5 bg-blue-500 px-4 py-2 rounded text-white">
+                    Update Profile
+                </Link>
+            </div>
+
+            <button
+                className="mt-5 bg-blue-500 px-4 py-2 cursor-pointer rounded text-white"
                 onClick={handleLogout}>
                 Logout
             </button>

@@ -15,7 +15,7 @@ export const Login: React.FC<LoginProps> = (props) => {
 
         if (emailRef.current && passwordRef.current) {
             await login(emailRef.current.value, passwordRef.current.value);
-            navigate('/dashboard');
+            navigate('/'); // go to dashboard
         }
     }
 
@@ -47,7 +47,7 @@ export const Login: React.FC<LoginProps> = (props) => {
                     </button>
                 </div>
                 <div className="text-right mt-5">
-                    Need an account? <Link to="signup">Sign up</Link>
+                    Need an account? <Link to="/signup">Sign up</Link>
                 </div>
             </form>
         </div>

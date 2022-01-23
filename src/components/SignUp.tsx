@@ -15,11 +15,11 @@ export const SignUp: React.FC<SignUpProps> = () => {
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        // TODO: validate  passwords match
+        // TODO: validate passwords match
 
         if (emailRef.current && passwordRef.current) {
             await signUp(emailRef.current.value, passwordRef.current.value);
-            navigate('/dashboard');
+            navigate('/'); // got to dashboard
         }
     }
 
@@ -55,7 +55,7 @@ export const SignUp: React.FC<SignUpProps> = () => {
                     </button>
                 </div>
                 <div className="text-right mt-5">
-                    Have already an account? <Link to="/">Login</Link>
+                    Have already an account? <Link to="/login">Login</Link>
                 </div>
             </form>
         </div>
