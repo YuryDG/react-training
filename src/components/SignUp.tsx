@@ -29,16 +29,16 @@ export const SignUp: React.FC<SignUpProps> = () => {
             <hr className="mb-5" />
             <form name="signUpForm" onSubmit={onSubmit}>
                 <div className="flex items-center justify-center mb-3">
-                    <label className="w-[150px]" htmlFor="email">Email:</label>
-                    <input className="border p-2 rounded ml-3" name="email" required ref={emailRef} />
+                    <label className="w-2/3" htmlFor="email">Email:</label>
+                    <input className="border w-full p-2 rounded ml-3" name="email" required ref={emailRef} />
                 </div>
                 <div className="flex items-center justify-center mb-3">
-                    <label className="w-[150px]" htmlFor="password">Password:</label>
-                    <input className="border p-2 rounded ml-3" type="password" name="password" required ref={passwordRef} />
+                    <label className="w-2/3" htmlFor="password">Password:</label>
+                    <input className="border w-full p-2 rounded ml-3" type="password" name="password" required ref={passwordRef} />
                 </div>
                 <div className="flex items-center justify-center mb-3">
-                    <label className="w-[150px]" htmlFor="confirm_password">Confirm Password:</label>
-                    <input className="border p-2 rounded ml-3" type="password" name="confirm_password" required ref={confirmPasswordRef} />
+                    <label className="w-2/3" htmlFor="confirm_password">Confirm Password:</label>
+                    <input className="border w-full p-2 rounded ml-3" type="password" name="confirm_password" required ref={confirmPasswordRef} />
                 </div>
                 <div className="text-center">
                     <hr />

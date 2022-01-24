@@ -10,7 +10,7 @@ import { useAuth } from "./context";
 export default function App() {
   const { message } = useAuth();
   return (
-    <div className=" sm:w-2/3 w-2/6 mx-auto">
+    <div className="sm:w-[550px] w-3/6 mx-auto">
       <nav>
         <ul className="flex justify-between bg-gray-800 text-white px-5 py-3 rounded-sm">
           <li className="">

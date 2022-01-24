@@ -1,5 +1,5 @@
 import { FormEvent, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context";
 
 type UpdateProfileProps = {};
@@ -24,7 +24,7 @@ export const UpdateProfile: React.FC<UpdateProfileProps> = () => {
             <hr className="mb-5" />
             <form name="signUpForm" onSubmit={onSubmit}>
                 <div className="flex items-center justify-center mb-3">
-                    <label htmlFor="email">Email:</label>
+                    <label className="w-2/3" htmlFor="email">Email:</label>
                     {currentUser && <input className="border p-2 w-full rounded ml-3"
                         name="email"
                         required
@@ -34,18 +34,18 @@ export const UpdateProfile: React.FC<UpdateProfileProps> = () => {
                     }
                 </div>
                 <div className="flex items-center justify-center mb-3">
-                    <label htmlFor="password">Password:</label>
+                    <label className="w-2/3" htmlFor="password">Password:</label>
                     <input
-                        className="border p-2 rounded ml-3 w-full"
+                        className="border p-2 rounded w-full"
                         placeholder="Leave blank to keep the same"
                         type="password"
                         name="password"
                         ref={passwordRef} />
                 </div>
                 <div className="flex items-center justify-center mb-3">
-                    <label htmlFor="confirm_password">Confirm Password:</label>
+                    <label className="w-2/3" htmlFor="confirm_password">Confirm Password:</label>
                     <input
-                        className="border p-2 rounded ml-3 w-full"
+                        className="border p-2 rounded w-full"
                         placeholder="Leave blank to keep the same"
                         type="password"
                         name="confirm_password"

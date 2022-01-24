@@ -19,8 +19,8 @@ export const Login: React.FC<LoginProps> = () => {
             await login(emailRef.current.value, passwordRef.current.value);
 
             // NavigationState is a custom type created by me
-            const to = location.state? (location.state as NavigationState).from : '/';            
-            
+            const to = location.state ? (location.state as NavigationState).from : '/';
+
             navigate(to); // go to the same place where it was redirected to login page
         }
     }
@@ -31,12 +31,14 @@ export const Login: React.FC<LoginProps> = () => {
             <hr className="mb-5" />
             <form name="signUpForm" onSubmit={onSubmit}>
                 <div className="flex items-center justify-center mb-3">
-                    <label className="w-[150px]" htmlFor="email">Email:</label>
-                    <input className="border p-2 rounded ml-3" name="email" required ref={emailRef} />
+                    <label className="w-2/3" htmlFor="email">Email:</label>
+                    <input className="w-full border p-2 rounded ml-3"
+                        type="email"
+                        name="email" required ref={emailRef} />
                 </div>
                 <div className="flex items-center justify-center mb-3">
-                    <label className="w-[150px]" htmlFor="password">Password:</label>
-                    <input className="border p-2 rounded ml-3" type="password" name="password" required ref={passwordRef} />
+                    <label className="w-2/3" htmlFor="password">Password:</label>
+                    <input className="border w-full p-2 rounded ml-3" type="password" name="password" required ref={passwordRef} />
                 </div>
                 <div className="text-center">
                     <hr />

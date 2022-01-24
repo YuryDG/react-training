@@ -25,8 +25,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           
             <form name="signUpForm" onSubmit={onSubmit}>
                 <div className="flex items-center justify-center mb-3">
-                    <label className="w-[150px]" htmlFor="email">Email:</label>
-                    <input className="border p-2 rounded ml-3" name="email" required ref={emailRef} />
+                    <label className="w-1/3" htmlFor="email">Email:</label>
+                    <input className="border p-2 w-full rounded ml-3" name="email" required ref={emailRef} />
                 </div>
                 <div className="text-center">
                     <hr />
