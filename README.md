@@ -1,5 +1,6 @@
-# Firebase 9 + React + TS example
+# Firebase 9 + React + Typescript
 
+For this example we are using `Email/Password` provider from Firebase
 ## Features
 - Sign up
 - Login 
@@ -7,25 +8,22 @@
 - Reset password
 - Update profile
 
-
 ## Before run the app
-Create a .env.local file in the root folder and add the firebase web app config.
+Create a `.env.local` file in the root folder and add the firebase web app config.
 
 ```
 REACT_APP_FIREBASE_API_KEY=
-REACT_APP_FIREBASE_AUTH_DOMAIN=com
+REACT_APP_FIREBASE_AUTH_DOMAIN=
 REACT_APP_FIREBASE_PROJECT_ID=
 REACT_APP_FIREBASE_STORAGE_BUCKET=
 REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
 REACT_APP_FIREBASE_APP_ID=
 ```
 
-### Setup firebase
+### Setup Firebase
 https://www.youtube.com/watch?v=PKwu15ldZ7k&t=105s
 
-
 ## Run the app
-
 In the project directory, you can run:
 
 ### `yarn start`
