@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 // check the api on firebase, for this functions
 // https://firebase.google.com/docs/web/setup#available-libraries
 import {
-    getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
@@ -13,6 +12,8 @@ import {
     User,
     onAuthStateChanged,
 } from "firebase/auth";
+
+import { auth } from '../firebase';
 
 import { Message } from '../types';
 
@@ -87,7 +88,7 @@ export const AuthProvider: React.FC = ({ children }) => {
      */
     useEffect(() => {
 
-        const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setIsFetchingUser(false);
             // if (user) {
@@ -109,7 +110,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         try {
             setIsLoading(true);
             setMessage({ title: '', info: '', type: 'error' });
-            await createUserWithEmailAndPassword(getAuth(), email, password);
+            await createUserWithEmailAndPassword(auth, email, password);
             setMessage({ title: 'Sign up', info: 'Welcome to the system', type: 'info' });
             setIsLoading(false);
         } catch (error) {
@@ -126,7 +127,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         try {
             setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(true);
-            await signInWithEmailAndPassword(getAuth(), email, password);
+
+            await signInWithEmailAndPassword(auth, email, password);
             setMessage({
                 title: 'Login',
                 info: 'Welcome back ' + email,
@@ -147,7 +149,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         try {
             setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(true);
-            await signOut(getAuth());
+            await signOut(auth);
             setIsLoading(false);
         } catch (error) {
             setMessage({
@@ -163,7 +165,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         try {
             setMessage({ title: '', info: '', type: 'error' });
             setIsLoading(true);
-            await sendPasswordResetEmail(getAuth(), email);
+            await sendPasswordResetEmail(auth, email);
             setMessage({
                 title: 'Reset Password',
                 info: 'Check your email for further instructions',
