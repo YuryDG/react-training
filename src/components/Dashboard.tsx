@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context";
+import { BookList } from "./books";
 
 type DashboardProps = {};
 
@@ -20,6 +21,10 @@ export const Dashboard: React.FC<DashboardProps> = () => {
                     className="mt-5 bg-blue-500 px-4 py-2 rounded text-white">
                     Update Profile
                 </Link>
+            </div>
+
+            <div>
+                <BookList />
             </div>
 
             <button

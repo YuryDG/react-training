@@ -14,3 +14,12 @@ export type Message = {
     info: string;
     type: "error" | 'info'
 };
+
+// Book from FireStore
+export type Book = {
+    id: string;
+    title: string;
+    author: string;
+}
+
+export type NewBook = Pick<Book, 'author' | 'title'>;
