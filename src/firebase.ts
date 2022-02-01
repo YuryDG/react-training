@@ -4,7 +4,8 @@ import {
     initializeApp,
     FirebaseApp,
     getApp,
-    getApps
+    getApps,
+    FirebaseError
 } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
@@ -43,15 +44,15 @@ export const db = getFirestore();
 // create references to your collections
 export const booksCollectionRef = collection(db, 'books');
 
-// // get collection data
-// getDocs(booksCollectionRef)
-//     .then((snapshot) => {
-//         // each doc has a lot of info, but we care about the data, 
-//         // they also have some metadata
-//         const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-//         console.log({ books });
-//     }).catch(err => {
-//         console.log(err?.message);
-//     });
+// get collection data
+getDocs(booksCollectionRef)
+    .then((snapshot) => {
+        // each doc has a lot of info, but we care about the data, 
+        // they also have some metadata
+        const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        console.log({ books });
+    }).catch((err: FirebaseError) => {
+        console.log(err.message)
+    });
 
 export default app;
