@@ -60,6 +60,18 @@ export const BookList: React.FC<BookListProps> = () => {
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Book));
             setBooks(books);
+
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    console.log("Added: ", change.doc.data());
+                }
+                if (change.type === "modified") {
+                    console.log("Modified: ", change.doc.data());
+                }
+                if (change.type === "removed") {
+                    console.log("Removed: ", change.doc.data());
+                }
+            });
         });
 
         return unsubscribe;
