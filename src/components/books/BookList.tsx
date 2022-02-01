@@ -1,10 +1,24 @@
 import { useEffect, useState } from "react";
 import { Book, NewBook } from "../../types";
-import { getDocs, addDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
+import {
+    getDocs,
+    addDoc,
+    doc,
+    deleteDoc,
+    onSnapshot,
+    query,
+    where,
+    orderBy,
+    setDoc,
+    serverTimestamp,
+    getDoc,
+    updateDoc,
+} from "firebase/firestore";
 
 import { booksCollectionRef, db } from "../../firebase";
 import { BookItem } from "./BookItem";
 import { BookForm } from "./BookForm";
+import { isBook } from "../../guards";
 
 type BookListProps = {};
 
@@ -12,6 +26,8 @@ export const BookList: React.FC<BookListProps> = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [bookToEdit, setBookToEdit] = useState<Book | undefined>();
+
 
     // useEffect(() => {
 
@@ -39,7 +55,9 @@ export const BookList: React.FC<BookListProps> = () => {
      */
     useEffect(() => {
 
-        const unsubscribe = onSnapshot(booksCollectionRef, (snapshot) => {
+        const q = query(booksCollectionRef, where("author", "==", "William Shakespeare"), orderBy('title', 'desc'));
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
             const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Book));
             setBooks(books);
         });
@@ -48,7 +66,7 @@ export const BookList: React.FC<BookListProps> = () => {
     }, []);
 
     const onEdit = (book: Book) => {
-        console.log('Edit', book);
+        setBookToEdit(book);
     }
 
     const onRemove = async (id: string) => {
@@ -60,7 +78,7 @@ export const BookList: React.FC<BookListProps> = () => {
         }
     }
 
-    const onSubmit = async (newBook: NewBook) => {
+    const addNewBook = async (newBook: NewBook) => {
         try {
             const response = await addDoc(booksCollectionRef, newBook);
             console.log({ response });
@@ -69,11 +87,30 @@ export const BookList: React.FC<BookListProps> = () => {
         }
     }
 
+    const editBook = async (book: Book) => {
+        try {
+            const bookRef = doc(db, 'books', book.id);
+            const response = await updateDoc(bookRef, book);
+            console.log({ response });
+
+        } catch (error) {
+            console.error({ error });
+        }
+    }
+
+    const onSubmit = async (book: NewBook | Book) => {
+        if (isBook(book)) {
+            await editBook(book);
+        } else {
+            await addNewBook(book);
+        }
+    }
+
     return (
         <div className="border px-3 pb-3">
             {loading && <h2>Loading...</h2>}
             {error && <h2>Something went wrong...</h2>}
-            <BookForm onSubmit={onSubmit} />
+            <BookForm bookToEdit={bookToEdit} onSubmit={onSubmit} />
             <h2 className="m-3">Book List {books.length}</h2>
             <ul className="mt-3 space-y-3">
                 {

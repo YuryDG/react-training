@@ -1,23 +1,28 @@
 import { FormEvent, useRef } from "react";
-import { NewBook } from "../../types";
+import { Book, NewBook } from "../../types";
 
 
 type BookFormProps = {
-    onSubmit: (newBook: NewBook) => void
+    onSubmit: (newBook: NewBook | Book) => void;
+    bookToEdit?: Book;
 };
 
-export const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
+export const BookForm: React.FC<BookFormProps> = ({ onSubmit, bookToEdit }) => {
     const titleRef = useRef<HTMLInputElement>(null);
     const authorRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (titleRef.current && authorRef.current) {
-            const newBook: NewBook = {
+            const book: NewBook | Book = {
                 title: titleRef.current.value,
                 author: authorRef.current.value
             }
-            onSubmit(newBook);
+            
+            if (bookToEdit) {
+                (book as Book).id = bookToEdit.id
+            }
+            onSubmit(book);
         }
     }
 
@@ -27,16 +32,22 @@ export const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
             <form name="new-book-form" className="" onSubmit={handleSubmit}>
                 <div className=" mb-4">
                     <label className="w-[100px] inline-block" htmlFor="title">Title</label>
-                    <input className=" ml-3 rounded p-2 border" name="title" type="text" ref={titleRef} />
+                    <input className=" ml-3 rounded p-2 border" name="title" type="text"
+                        ref={titleRef}
+                        defaultValue={bookToEdit ? bookToEdit.title : ''}
+                    />
                 </div>
 
                 <div className=" mb-4">
                     <label className="w-[100px] inline-block" htmlFor="author">Author</label>
-                    <input className=" ml-3 rounded p-2 border" name="author" type="text" ref={authorRef} />
+                    <input className=" ml-3 rounded p-2 border" name="author" type="text"
+                        ref={authorRef}
+                        defaultValue={bookToEdit ? bookToEdit.author : ''}
+                    />
                 </div>
 
                 <button type="submit" className=" bg-indigo-500 text-white px-3 py-1 rounded mr-3">
-                    Create Book
+                    {bookToEdit ? 'Update book' : 'Create New Book'}
                 </button>
             </form>
         </div>
