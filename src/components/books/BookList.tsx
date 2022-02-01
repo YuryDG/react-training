@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Book, NewBook } from "../../types";
-import { getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { getDocs, addDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
 
 import { booksCollectionRef, db } from "../../firebase";
 import { BookItem } from "./BookItem";
@@ -13,23 +13,38 @@ export const BookList: React.FC<BookListProps> = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // useEffect(() => {
+
+    //     const getBooks = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const snapshot = await getDocs(booksCollectionRef);
+    //             const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+    //             // TODO: check is there is a better way to type the books
+    //             setBooks(books as Book[]);
+    //             setLoading(false);
+    //         } catch (err) {
+    //             setError((err as Error).message);
+    //         }
+    //     }
+
+    //     getBooks();
+    // }, []);
+
+    /**
+     * Subscribing to real data update, 
+     * note that for this case, we dont need the implementation above since 
+     * onSnapshot will run the first time and will get all data from the collection
+     */
     useEffect(() => {
 
-        const getBooks = async () => {
-            try {
-                setLoading(true);
-                const snapshot = await getDocs(booksCollectionRef);
-                const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        const unsubscribe = onSnapshot(booksCollectionRef, (snapshot) => {
+            const books = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Book));
+            setBooks(books);
+        });
 
-                // TODO: check is there is a better way to type the books
-                setBooks(books as Book[]);
-                setLoading(false);
-            } catch (err) {
-                setError((err as Error).message);
-            }
-        }
-
-        getBooks();
+        return unsubscribe;
     }, []);
 
     const onEdit = (book: Book) => {
@@ -68,7 +83,8 @@ export const BookList: React.FC<BookListProps> = () => {
                             onEdit={onEdit}
                             onRemove={onRemove}
                             book={book} />
-                    ))}
+                    ))
+                }
             </ul>
         </div>
     )
