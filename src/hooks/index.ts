@@ -1,1 +1,1 @@
-export const t = 0;
+export * from './usePosts';
