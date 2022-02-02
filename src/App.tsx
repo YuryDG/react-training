@@ -1,7 +1,18 @@
+import { Route, Routes } from "react-router-dom";
+import {
+  PostList,
+  PostDetails,
+  Home
+} from "./components";
+
 export default function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Routes>
+      <Route path="/" element={<Home />} >
+        <Route path="posts" element={<PostList />} >
+          <Route path=":postId" element={<PostDetails />} />
+        </Route>
+      </Route>
+    </Routes>
   )
 }
