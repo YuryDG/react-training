@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 
-import { GET_ALL_POSTS } from "../Query";
+import { GET_ALL_POSTS } from "../Queries";
 import { AllPostResponse, PostFilter } from "../types";
 
 export const usePosts = () => {
