@@ -70,3 +70,7 @@ export type CommentFilter = {
     date_gte: Date;
     date_neq: Date;
 }
+
+export type AllPostResponse = {
+    allPosts: Post[]
+}
