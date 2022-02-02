@@ -1,46 +1,105 @@
-# Getting Started with Create React App
+# ApolloClient v3
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+For this project I'll be using a awesome package called [json-graphql-server](https://github.com/marmelab/json-graphql-server) to get a full fake GraphQL API with zero coding in less than 30 seconds. 
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `yarn start`
+## Features in this example
+- CRUD Post
+- CRUD Comment    
+- CRUD User
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Generated Queries
+```
+Post(id: ID!): Post
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+allPosts(
+    page: Int
+    perPage: Int
+    sortField: String
+    sortOrder: String
+    filter: PostFilter
+): [Post]
 
-### `yarn test`
+_allPostsMeta(
+    page: Int
+    perPage: Int
+    filter: PostFilter
+): ListMetadata
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+User(id: ID!): User
 
-### `yarn build`
+allUsers(
+    page: Int
+    perPage: Int
+    sortField: String
+    sortOrder: String
+    filter: UserFilter
+): [User]
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+_allUsersMeta(
+    page: Int
+    perPage: Int
+    filter: UserFilter
+): ListMetadata
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Comment(id: ID!): Comment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+allComments(
+    page: Int
+    perPage: Int
+    sortField: String
+    sortOrder: String
+    filter: CommentFilter
+): [Comment]
 
-### `yarn eject`
+_allCommentsMeta(
+    page: Int
+    perPage: Int
+    filter: CommentFilter
+): ListMetadata
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Generated Mutations
+```
+createPost(
+    title: String!
+    views: Int!
+    user_id: ID!
+): Post
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+createManyPost(data: [PostInput]): [Post]
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+updatePost(id: ID!
+    title: String
+    views: Int
+    user_id: ID
+): Post
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+removePost(id: ID!): Post
 
-## Learn More
+createUser(name: String!): User
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+createManyUser(data: [UserInput]): [User]
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+updateUser(id: ID!name: String): User
+
+removeUser(id: ID!): User
+
+createComment(
+    post_id: ID!
+    body: String!
+    date: Date!
+): Comment
+
+createManyComment(data: [CommentInput]): [Comment]
+
+updateComment(
+    id: ID!
+    post_id: ID
+    body: String
+    date: Date
+): Comment
+
+removeComment(id: ID!): Comment
+```
