@@ -1,3 +1,5 @@
+export * from './Home';
 export * from './PostList';
 export * from './PostDetails';
-export * from './Home';
+export * from './CreatePost';
+export * from './EditPost';
