@@ -74,3 +74,8 @@ export type CommentFilter = {
 export type AllPostResponse = {
     allPosts: Post[]
 }
+
+export type UpdatePostVariables = {
+    updatePostId: number;
+    views: number;
+}
