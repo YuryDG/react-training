@@ -40,3 +40,11 @@ query Post($postId: ID!) {
   }
 }
 `;
+
+export const GET_USERS = gql`
+query AllUsers {
+  allUsers {
+    id
+    name
+  }
+}`

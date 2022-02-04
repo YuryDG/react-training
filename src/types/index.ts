@@ -75,7 +75,15 @@ export type AllPostResponse = {
     allPosts: Post[]
 }
 
+export type GetAllPostsVariables = {
+    filter: PostFilter
+}
+
 export type UpdatePostVariables = {
     updatePostId: number;
     views: number;
+}
+
+export type GetUsersResponse = {
+    allUsers: User[]
 }
