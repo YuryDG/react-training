@@ -1,36 +1,29 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import {  useQuery } from "@apollo/client";
 import { usePosts } from "../hooks";
-import { GET_ALL_POSTS, GET_USERS } from "../Queries";
-import { AllPostResponse, GetAllPostsVariables, GetUsersResponse } from "../types";
+import {  GET_USERS } from "../Queries";
+import {  GetUsersResponse } from "../types";
 import { PostItem } from "./PostItem";
 
 export const PostList: React.FC = () => {
-    // const { data, loading, error, refetch } = usePosts();
+    const { data, loading, error, refetch } = usePosts();
     const { data: usersResponse } = useQuery<GetUsersResponse>(GET_USERS);
-    const [selectedUser, setSelectedUser] = useState("")
-    const [getAllPosts, { data, loading, error }] = useLazyQuery<AllPostResponse, GetAllPostsVariables>(GET_ALL_POSTS);
 
-    useEffect(() => {
-        getAllPosts()
-    }, [])
+    const onSelectUser = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedUser = event.target.value;
 
-    useEffect(() => {
-        if(selectedUser){
-            getAllPosts({variables: {
+        if (selectedUser) {
+            refetch({
                 filter: {
                     user_id: Number(selectedUser)
                 }
-            }})
+            });
         } else {
-            getAllPosts()
+            // note that refetch is called with the last parameter that it was called the last time,
+            // so to be save, we could call refetch with the proper parameter always
+            refetch({
+                filter: {}
+            });
         }
-        
-    },[selectedUser])
-
-    const onSelectUser = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedUser(event.target.value)
-        
     }
 
     if (loading) return <p>Loading...</p>;
@@ -39,7 +32,7 @@ export const PostList: React.FC = () => {
     return (
         <section className="text-gray-600 body-font">
             <div className="px-5 flex justify-end">
-                <select className="border p-3 rounded" value={selectedUser} onChange={onSelectUser}>
+                <select className="border p-3 rounded" onChange={onSelectUser}>
                     <option value="">Show all posts</option>
                     {usersResponse?.allUsers.map(item => <option key={item.id} value={item.id}>Only post created by {item.name}</option>)}
                 </select>
