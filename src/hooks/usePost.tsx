@@ -8,6 +8,13 @@ export const usePost = (postId: number) => {
         variables: {
             postId
         },
+        errorPolicy: 'all',
+        onCompleted: (data) => {
+            console.log('onCompleted', data.Post);
+        },
+        onError: (error) => {
+            console.log({ error })
+        }
     });
 
     return {
