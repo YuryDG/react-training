@@ -22,7 +22,7 @@ export type Comments = {
 export type Post = {
     id: string;
     title: string;
-    views: string;
+    views: number;
     user_id: string;
     User?: User;
     Comments?: Comment[];
@@ -79,11 +79,19 @@ export type GetAllPostsVariables = {
     filter: PostFilter
 }
 
-export type UpdatePostVariables = {
-    updatePostId: number;
-    views: number;
+export type UpdatePostParams = {
+    updatePostId: Post['id'];
+    views: Post['views'];
 }
 
 export type GetUsersResponse = {
     allUsers: User[]
+}
+
+export type GetPostResponse = {
+    Post: Post;
+}
+
+export type GetPostParams = {
+    postId: Post['id'];
 }

@@ -21,7 +21,7 @@ query allPosts($filter: PostFilter) {
 `;
 
 export const GET_POST = gql`
-query Post($postId: ID!) {
+query GetPost($postId: ID!) {
   Post(id: $postId) {
     id
     title

@@ -8,7 +8,38 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      // Query: {
+      //   fields: {
+      //     Post: {
+      //       read: (existing, { toReference, args }) => {
+      //         const postRef = toReference({
+      //           __typename: 'Post',
+      //           id: args ? args.id : ''
+      //         });
+
+      //         console.log({ existing, args, postRef });
+
+      //         return existing ?? postRef;
+      //       }
+      //     }
+      //   }
+      // },
+      Post: {
+        fields: {
+          titleAndViews: {
+            read: (a, b) => {
+              const v = b.variables;
+              const title = b.readField('title');
+              const views = b.readField('views');
+              return `${title} - ${views}`;
+            }
+          }
+        }
+      }
+    }
+  })
 });
 
 ReactDOM.render(

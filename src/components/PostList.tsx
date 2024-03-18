@@ -1,7 +1,7 @@
-import {  useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { usePosts } from "../hooks";
-import {  GET_USERS } from "../Queries";
-import {  GetUsersResponse } from "../types";
+import { GET_USERS } from "../Queries";
+import { GetUsersResponse } from "../types";
 import { PostItem } from "./PostItem";
 
 export const PostList: React.FC = () => {
@@ -10,7 +10,6 @@ export const PostList: React.FC = () => {
 
     const onSelectUser = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedUser = event.target.value;
-
         if (selectedUser) {
             refetch({
                 filter: {
@@ -26,7 +25,7 @@ export const PostList: React.FC = () => {
         }
     }
 
-    if (loading) return <p>Loading...</p>;
+    // if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :( {error.message}</p>;
 
     return (

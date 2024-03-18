@@ -1,9 +1,9 @@
 import { useMutation } from "@apollo/client"
 import { UPDATE_POST } from "../Mutations"
-import { UpdatePostVariables } from "../types"
+import { UpdatePostParams } from "../types"
 
 export const useUpdatePostViews = () => {
-    const [updatePost, { loading, data, error, }] = useMutation<{ id: number }, UpdatePostVariables>(UPDATE_POST);
+    const [updatePost, { loading, data, error, }] = useMutation<{ id: number }, UpdatePostParams>(UPDATE_POST);
     
     return {
         updatePost,

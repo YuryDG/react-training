@@ -1,29 +1,39 @@
-import { useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import { AiOutlineComment, AiOutlineEye } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
-import { usePost, useUpdatePostViews } from "../hooks";
+import { useUpdatePostViews } from "../hooks";
+import { GET_POST } from "../Queries";
+import { GetPostParams, GetPostResponse } from "../types";
 
 export const PostDetails: React.FC = () => {
     const params = useParams<{ postId: string }>();
-    const postId = Number(params.postId);
-    const { data, refetch } = usePost(postId);
+    const postId = String(params.postId);
     const { updatePost } = useUpdatePostViews();
-
-    useEffect(() => {
-        const update = async () => {
-            await updatePost({
-                variables: {
-                    updatePostId: postId,
-                    views: (Number(data?.Post.views) || 0) + 1
-                }
-            });
-            refetch();
+    const { data } = useQuery<GetPostResponse, GetPostParams>(GET_POST, {
+        variables: { postId },
+        onCompleted: (info) => {
+            // updatePost({
+            //     variables: {
+            //         updatePostId: postId,
+            //         views: info.Post.views + 1
+            //     }
+            // });
+        },
+        onError: (error) => {
+            console.log({ error })
         }
-        update();
-    }, []);
+    });
 
     return (
         <div>
+            <button className="p-2 rounded border" onClick={() => {
+                updatePost({
+                    variables: {
+                        updatePostId: postId,
+                        views: Number(data?.Post.views) + 1
+                    }
+                });
+            }}>update view</button>
             <h2 className=" text-2xl mb-3">{data?.Post.title}</h2>
             <p className="leading-relaxed mb-3">
                 What is Lorem Ipsum?
